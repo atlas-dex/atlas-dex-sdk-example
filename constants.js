@@ -12,7 +12,7 @@ BASE_URL : 'http://35.179.82.212:4000/api/',
     toChainId: 101,
     toTokenAddress: 'EjmyN6qEC1Tf1JxiG1ae7UTJhUxSwk1TCWNWqxWV4J6o',
     slippage: 0.5,
-    fromAccountAddress: '35PVL3KxMohMgTvQEePGc2G6VbHzRHcs2NRxfia2vf8X', //SOLANA
-    toAccountAddress: '35PVL3KxMohMgTvQEePGc2G6VbHzRHcs2NRxfia2vf8X', //SOLANA
+    fromAccountAddress: process.env.SOLANA_WALLET_PUBLIC_ADDRESS, //SOLANA
+    toAccountAddress: process.env.SOLANA_WALLET_PUBLIC_ADDRESS, //SOLANA
   }
 }
