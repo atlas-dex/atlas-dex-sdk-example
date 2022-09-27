@@ -1,1 +1,1 @@
-# atlas-dex-sdk-example
+# Atlas Dex Sdk Examples
