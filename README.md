@@ -58,7 +58,7 @@ Sample output
 
 ### Get Swap Transaction /swap
 Sample Input
-Loop over steps you get in qoutes for a single qoute and pass it in below swap api
+#### Loop over steps you get in qoutes for a single qoute and pass it in below swap api
 ```bash
 await axios({
       method: "POST",
