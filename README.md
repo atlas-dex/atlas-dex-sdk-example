@@ -34,20 +34,20 @@ Sample output
 {
     "routes": [
         {
-            "route_id": "92519a24-897d-4ef7-a644-485bcd3dee54",
+            "route_id": "d4484ea6-24e9-4937-a87e-0cff45ec9bba",
             "inAmount": 10000000,
-            "outAmount": 2162734017,
+            "outAmount": 2171540119,
             "priceImpact": -0.02083,
-            "steps": [
+            "actions": [
                 "SWAP_SOLANA"
             ]
         },
         {
-            "route_id": "38f9d67f-655f-40d7-81df-a8dcf03954fd",
+            "route_id": "71294b87-2d87-4d6b-b9f6-d6726efcfe14",
             "inAmount": 10000000,
-            "outAmount": 2149140000,
+            "outAmount": 2159136000,
             "priceImpact": -0.021,
-            "steps": [
+            "actions": [
                 "SWAP_SOLANA"
             ]
         }
@@ -58,7 +58,7 @@ Sample output
 
 ### Get Swap Transaction /swap
 Sample Input
-#### Loop over steps you get in qoutes for a single qoute and pass it in below swap api
+#### Loop over actions you get in qoutes for a single qoute and pass it in below swap api
 ```bash
 await axios({
       method: "POST",
