@@ -5,6 +5,6 @@ const port = 3000 // You can change this port if its already in use in any  othe
 
 // const {performSolToSolSWAP} = require('./sol_sol');
 // performSolToSolSWAP();
-const { performCrossChainEVMToEVM } = require('./evm_evm_cross_chain');
+const { performCrossChainEVMToEVM } = require('./examples/evm_evm_cross_chain');
 
 performCrossChainEVMToEVM();
