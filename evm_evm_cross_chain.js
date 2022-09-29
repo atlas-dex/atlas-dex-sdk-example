@@ -1,7 +1,7 @@
 const axios = require("axios");
 const { ethers, Wallet } = require("ethers");
-let EVM_WALLET_PRIVATE_ADDRESS = process.env.EVM_WALLET_PRIVATE_ADDRESS;
-
+const EVM_WALLET_PRIVATE_ADDRESS = process.env.EVM_WALLET_PRIVATE_ADDRESS;
+const BASE_URL = process.env.BASE_URL;
 const performCrossChainEVMToEVM = async function performCrossChainEVMToEVM() {
   try {
     let hash;
@@ -11,7 +11,7 @@ const performCrossChainEVMToEVM = async function performCrossChainEVMToEVM() {
     let evmWallet = new Wallet(EVM_WALLET_PRIVATE_ADDRESS, evmProvider);
     const { data: quoteData } = await axios({
       method: "POST",
-      url: "http://localhost:4000/api/routes",
+      url: `${BASE_URL}/routes`,
       data: {
         fromAmount: "0.001",
         fromChainId: 250,
@@ -26,41 +26,23 @@ const performCrossChainEVMToEVM = async function performCrossChainEVMToEVM() {
     const quote = quoteData.routes[0];
     for (const action of quote.actions) {
       console.log(action);
-      if (action === "UNLOCK_EVM") {
-        console.log("IN THE IF BLOCK");
-        let evmProvider = new ethers.providers.JsonRpcProvider(
-          "https://polygon-rpc.com"
-        );
-        let evmWallet = new Wallet(EVM_WALLET_PRIVATE_ADDRESS, evmProvider);
-        const { data: swapData } = await axios({
-          method: "POST",
-          url: "http://localhost:4000/api/swap",
-          data: {
-            route_id: quote.route_id,
-            hash,
-            action,
-          },
-        });
-        let gasPrice = await evmProvider.getGasPrice();
-        const tx = {
-          to: swapData.data.to,
-          value: swapData.data.value,
-          data: swapData.data.data,
-          gasPrice: gasPrice,
-          gasLimit: 500000,
-        };
-        const result = await evmWallet.sendTransaction(tx);
-        await result.wait();
-        console.log(result);
-      }
-      const { data: swapData } = await axios({
+      const options = {
         method: "POST",
-        url: "http://localhost:4000/api/swap",
+        url: `${BASE_URL}/swap`,
         data: {
           route_id: quote.route_id,
           action,
         },
-      });
+      };
+      if (action === "UNLOCK_EVM") {
+        console.log("IN THE IF BLOCK");
+        evmProvider = new ethers.providers.JsonRpcProvider(
+          "https://polygon-rpc.com"
+        );
+        evmWallet = new Wallet(EVM_WALLET_PRIVATE_ADDRESS, evmProvider);
+        options.data.hash = hash;
+      }
+      const { data: swapData } = await axios(options);
       let gasPrice = await evmProvider.getGasPrice();
       const tx = {
         to: swapData.data.to,
