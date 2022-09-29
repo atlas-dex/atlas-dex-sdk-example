@@ -44,7 +44,7 @@ const performCrossChainEVMToEVM = async function performCrossChainEVMToEVM() {
 
     const { actions, route_id } = quoteData.routes[0]; // assume we select top route provided by api.
 
-    let hash = null;
+    let lockHash = null;
     // iterating over actions and performing them onchain.
     for (const action of actions) {
       console.log(action);
@@ -54,7 +54,7 @@ const performCrossChainEVMToEVM = async function performCrossChainEVMToEVM() {
         data: {
           route_id,
           action,
-          hash,
+          hash: lockHash,
         },
       };
       
@@ -66,7 +66,7 @@ const performCrossChainEVMToEVM = async function performCrossChainEVMToEVM() {
 
       const wallet = new Wallet(EVM_WALLET_PRIVATE_ADDRESS, provider);
 
-      let gasPrice = await provider.getGasPrice();
+      let gasPrice = swapData.data.chainId === 137 ? "50000000000" : await provider.getGasPrice();
       const tx = {
         to: swapData.data.to,
         value: swapData.data.value,
@@ -76,19 +76,19 @@ const performCrossChainEVMToEVM = async function performCrossChainEVMToEVM() {
 
 
       const result = await wallet.sendTransaction(tx);
-      hash = result.hash;
       
       let confirmationsForBlock = 1;
       if (action === "LOCK_EVM") {
         confirmationsForBlock = 15;
+        lockHash = result.hash;
       }
 
-      console.log(`Transaction Broadcasted : ${hash}.  Now Waiting for ${confirmationsForBlock} blocks to go to next step.`);
+      console.log(`Transaction Broadcasted : ${result.hash}.  Now Waiting for ${confirmationsForBlock} blocks to go to next step.`);
 
 
       await result.wait(confirmationsForBlock); //  we need to wait for blocks confirmation
 
-      console.log("ACTION COMPLETED : ", action, hash);
+      console.log("ACTION COMPLETED : ", action, result.hash);
     }
   } catch (error) {
     console.log(error);
