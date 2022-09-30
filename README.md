@@ -8,7 +8,7 @@ Rename .evn-example file to .env  and update the required keys
 
 Use follosing value for base url.
 ```bash
-BASE_URL =
+BASE_URL = https://api.atlasdex.finance
 ```
 
 ### Get Quote /routes 
