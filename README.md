@@ -1,17 +1,17 @@
-# Atlas Dex Sdk Examples
+# Atlas DEX | DeFi Cross-chain Aggregator SDK Integration Examples
 
 
-## Example Setup
+## Setup
 
 Clone the repository https://github.com/atlas-dex/atlas-dex-sdk-example.git
 Rename .evn-example file to .env  and update the required keys
 
-Use follosing value for base url.
+Use following value for base url.
 ```bash
 BASE_URL = https://api.atlasdex.finance
 ```
 
-### Get Quote /routes 
+### Get Quotes/Routes 
 Sample Input 
 ```bash
 await axios({
@@ -19,13 +19,13 @@ await axios({
         url: `${BASE_URL}/routes`,
         data: {
           fromAmount: "0.01",
-          fromChainId: 101,
-          fromTokenAddress: "HJbNXx2YMRxgfUJ6K4qeWtjatMK5KYQT1QnsCdDWywNv",
-          toChainId: 56,
-          toTokenAddress: "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",
-          slippage: 10,
-          fromAccountAddress: YOUR_WALLET_ADDRESS, //SOLANA
-          toAccountAddress: YOUR_WALLET_ADDRESS, //BIANANCE
+          fromChainId: 101, // Token Chain
+          fromTokenAddress: "HJbNXx2YMRxgfUJ6K4qeWtjatMK5KYQT1QnsCdDWywNv",// Token Address
+          toChainId: 56, // Token Chain
+          toTokenAddress: "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",// Token Address
+          slippage: 1.5, // In Percentage like 1.5 shows 1.5%
+          fromAccountAddress: YOUR_WALLET_ADDRESS, // Optional 
+          toAccountAddress: YOUR_WALLET_ADDRESS, // Optional
         },
       });
 ```
@@ -39,7 +39,7 @@ Sample output
             "outAmount": 2171540119,
             "priceImpact": -0.02083,
             "actions": [
-                "SWAP_SOLANA"
+                "SWAP", "LOCK", "BRIDGE", "UNLOCK"
             ]
         },
         {
@@ -48,7 +48,7 @@ Sample output
             "outAmount": 2159136000,
             "priceImpact": -0.021,
             "actions": [
-                "SWAP_SOLANA"
+                "SWAP", "LOCK", "BRIDGE", "UNLOCK"
             ]
         }
     ],
@@ -56,9 +56,10 @@ Sample output
 }
 ```
 
-### Get Swap Transaction /swap
+### Get Swap Unsigend Transactions
 Sample Input
-#### Loop over actions you get in qoutes for a single qoute and pass it in below swap api
+#### Loop over actions you get in qoutes api and pass it in below swap api
+
 ```bash
 await axios({
       method: "POST",
@@ -71,7 +72,7 @@ await axios({
     });
 ```
 Sample Output
-#### Response in case of solana chain
+#### Response in case of solana chain action
 ```bash
 {
     "data": {
@@ -81,7 +82,6 @@ Sample Output
         ]
     },
     "error": [
-        null
     ]
 }
 ```
@@ -96,7 +96,6 @@ Sample Output
         "data": "0x095ea7b3000000000000000000000000c180f11dbef1534ef29d1a1b34ab36dfc1ab76a20000000000000000000000000000000000000000000000000000000000002710"
     },
     "error": [
-        {}
     ]
 }
 ```
